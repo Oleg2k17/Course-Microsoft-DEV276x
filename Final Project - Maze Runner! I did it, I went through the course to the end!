@@ -1,0 +1,128 @@
+package DEV276x;
+
+ /*
+  * Final Project - Maze Runner
+  * Created by Oleg Kolesnikov
+  * I could comment out in the Maze class the string solution [13] [17] = '0'; but it's not interesting.
+  * I changed part of the code and changed the solution [12] [16] from '-' to the character '*'
+ */
+
+import java.util.Scanner;
+
+public class MazeRunner {
+
+    static Scanner SCANNER = new Scanner(System.in);
+    static Maze myMap = new Maze();
+
+    public static void main(String[] args) {
+        intro();
+        int move = 0;
+        while(!myMap.didIWin()) {
+            userMove();
+            move++;
+            movesMessage(move);
+            if (move == 100){
+                System.out.println("Sorry, but you didn't escape in time- you lose!");
+                break;
+            }
+        }
+        if (move < 100) {
+            System.out.println("Congratulations, you made it out alive!");
+            System.out.printf("and you did it in %d moves", move);
+        }
+    }
+
+    private static int movesMessage(int move) {
+        if (move == 50){
+            System.out.println("Warning: You have made 50 moves, you have 50 remaining before the maze exit closes");
+        }
+        if (move == 75){
+            System.out.println("Alert! You have made 75 moves, you only have 25 moves left to escape.");
+        }
+        if (move == 90){
+            System.out.println("DANGER! You have made 90 moves, you only have 10 moves left to escape!!");
+        }
+        if (move == 100){
+            System.out.println("Oh no! You took too long to escape, and now the maze exit is closed FOREVER >:[");
+        }
+        return move;
+    }
+
+    private static void navigatePit(String dir) {
+        if (myMap.isThereAPit(dir)){
+            System.out.println("Watch out! There's a pit ahead, jump it? Y - yes/ N - no");
+            String userAnswer = SCANNER.next().toUpperCase();
+            if (userAnswer.equals("Y")){
+                myMap.jumpOverPit(dir);
+            } else {
+                if (dir.equals("R")) {
+                    myMap.moveRight();
+                }
+                if (dir.equals("L")){
+                    myMap.moveLeft();
+                }
+                if (dir.equals("U")){
+                    myMap.moveUp();
+                }
+                if (dir.equals("D")){
+                    myMap.moveDown();
+                }
+            }
+        }
+    }
+
+    private static void userMove() {
+        String userAnswer = "";
+        while (!userAnswer.equals("R") && !userAnswer.equals("L") && !userAnswer.equals("U") && !userAnswer.equals("D")) {
+            System.out.print("Where would you like to move?\n(R - Right, L - Left, U - up, D - down)\n");
+            userAnswer = SCANNER.next().toUpperCase();
+        }
+        boolean wall = true;
+        switch (userAnswer) {
+            case "R":
+                if (myMap.canIMoveRight()){
+                    myMap.moveRight();
+                    wall = false;
+                } else if (myMap.isThereAPit(userAnswer)){
+                    navigatePit(userAnswer);
+                    wall = false;
+                }
+                break;
+            case "L":
+                if (myMap.canIMoveLeft()){
+                    myMap.moveLeft();
+                    wall = false;
+                } else if (myMap.isThereAPit(userAnswer)){
+                    navigatePit(userAnswer);
+                    wall = false;
+                }
+                break;
+            case "U":
+                if (myMap.canIMoveUp()){
+                    myMap.moveUp();
+                    wall = false;
+                } else if (myMap.isThereAPit(userAnswer)){
+                    navigatePit(userAnswer);
+                    wall = false;
+                }
+                break;
+            case "D":
+                if (myMap.canIMoveDown()){
+                    myMap.moveDown();
+                    wall = false;
+                } else if (myMap.isThereAPit(userAnswer)){
+                    navigatePit(userAnswer);
+                    wall = false;
+                }
+        }
+        myMap.printMap();
+        if (wall) {
+            System.out.println("Sorry, you’ve hit a wall.");
+        }
+    }
+
+    private static void intro() {
+        System.out.print("Welcome to Maze Runner!\nHere is your current position:\n");
+        myMap.printMap();
+    }
+}
