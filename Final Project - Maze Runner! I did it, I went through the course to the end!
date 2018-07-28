@@ -1,7 +1,7 @@
 package DEV276x;
 
  /*
-  * Final Project - Maze Runner
+  * Final Project - Maze Runner (Works only with Maze class)
   * Created by Oleg Kolesnikov
   * I could comment out in the Maze class the string solution [13] [17] = '0'; but it's not interesting.
   * I changed part of the code and changed the solution [12] [16] from '-' to the character '*'
