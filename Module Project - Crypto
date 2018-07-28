@@ -1,0 +1,105 @@
+/*
+Module Project - Crypto
+Created by Oleg Kolesnikov
+This project with methods of encrypting and decrypting text
+*/
+
+import java.util.Scanner;
+
+public class Crypto {
+    static Scanner SCANNER = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        System.out.println("Enter your message: ");
+        //String message = SCANNER.nextLine();
+        String cypherText = encryptString("Who will win the election?", 7, 2);
+        String plainText = decryptString(cypherText, 7);
+        System.out.println(plainText);
+    }
+
+    public static String encryptString(String text, int shift, int group) {
+        text = normalizeText(text);
+        text = caesarify(text, shift);
+        text = groupify(text, group);
+        return text;
+    }
+
+    public static String normalizeText(String text) {
+        StringBuffer textClean = new StringBuffer();
+        for (int i = 0; i < text.length(); i++) {
+            if (Character.isLetter(text.charAt(i))) {
+                textClean.append(text.charAt(i));
+            }
+        }
+        return textClean.toString().toUpperCase();
+    }
+
+    public static String caesarify(String text, int shift) {
+        shift = shift % 26;
+        if (shift < 0) {
+            shift = 26 + shift;
+        }
+        StringBuffer cryptText = new StringBuffer();
+        for (int i = 0; i < text.length(); i++) {
+            char tmp = text.charAt(i);
+            tmp = (char) (tmp + shift);
+            if (tmp > 90) {
+                tmp = (char) (64 + (tmp - 90));
+            }
+            cryptText.append(tmp);
+        }
+        return cryptText.toString().toUpperCase();
+    }
+
+    public static String groupify(String text, int group) {
+        int count = 0;
+        StringBuffer groupText = new StringBuffer();
+        int i = 0;
+        for (; i < text.length(); i++) {
+            char tmp = text.charAt(i);
+            groupText.append(tmp);
+            count++;
+            if (count == group) {
+                tmp = ' ';
+                groupText.append(tmp);
+                count = 0;
+            }
+        }
+        if (text.length() == i && count < group) {
+            for (; count < group; count++) {
+                char addition = 'x';
+                groupText.append(addition);
+            }
+        }
+        return groupText.toString();
+    }
+
+    public static String ungroupify(String text) {
+        StringBuffer textNoX = new StringBuffer();
+        for (int i = 0; i < text.length(); i++) {
+            if (Character.isLetter(text.charAt(i)) && text.charAt(i) != 'x') {
+                textNoX.append(text.charAt(i));
+            }
+        }
+        return textNoX.toString();
+    }
+
+    public static String decryptString(String text, int backShift) {
+        text = ungroupify(text);
+
+        backShift = backShift % 26;
+        if (backShift < 0) {
+            backShift = 26 + backShift;
+        }
+        StringBuffer decryptText = new StringBuffer();
+        for (int i = 0; i < text.length(); i++) {
+            char tmp = text.charAt(i);
+            tmp = (char) (tmp - backShift);
+            if (tmp < 65) {
+                tmp = (char) (91 - (65 - tmp));
+            }
+            decryptText.append(tmp);
+        }
+        return decryptText.toString().toUpperCase();
+    }
+}
