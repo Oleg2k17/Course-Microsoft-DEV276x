@@ -1,0 +1,57 @@
+    /*
+    Module Project - Trip Planner
+    Created by Oleg Kolesnikov
+    */
+    
+    import java.util.Scanner;
+    
+    public class TripPlanner {
+        static Scanner SCANNER = new Scanner(System.in);
+        public static void main(String[] args) {
+    
+            System.out.println("Welcome to Trip Planner!");
+            System.out.print("What is your name?");
+            String nameUser = SCANNER.next();
+            System.out.printf("Nice to meet you %s! Where are you travelling to?\n", nameUser);
+            String country = SCANNER.next();
+            System.out.printf("Great! %s sounds like a great trip!\n", country);
+            System.out.printf("**********\n\n");
+    
+            System.out.print("How many days are you going to spend travelling?");
+            int days = SCANNER.nextInt();
+            System.out.print("How much money, in USD, are you planning to spend on your trip?");
+            int money = SCANNER.nextInt();
+            System.out.print("What is the three letter currency symbol for your travel destination?");
+            String currencySymbol = SCANNER.next();
+            System.out.printf("How many %s are there in 1 USD?", currencySymbol);
+            int currencyByUSD = SCANNER.nextInt();
+    
+            int hours = days * 24;
+            int minutes = hours * 60;
+            double moneyPerDayUSD = money / days;
+            double totalCurrencyMoney = money * currencyByUSD;
+            double perDayCurrencyMoney = totalCurrencyMoney / days;
+    
+            System.out.printf("If you are travelling for %d days that is the same as %d hours or %d minutes\n", days, hours, minutes);
+            System.out.printf("If you are going to spend $%d USD that means per day you can spend up to $%.2f USD\n", money, moneyPerDayUSD);
+            System.out.printf("Your total budget in %s is %.2f %s, which per day is %.2f %s\n", currencySymbol, totalCurrencyMoney, currencySymbol, perDayCurrencyMoney, currencySymbol);
+            System.out.print("**********\n\n");
+    
+            System.out.print("What is the time difference, in hours, between your home and you destination?\n");
+            int differenceTime = SCANNER.nextInt();
+            int midnightHome = 0;
+            int noonHome = 12;
+            int midnightTrip = midnightHome + differenceTime;
+            int noonTrip = noonHome + differenceTime;
+            System.out.printf("That means that when it is midnight at home it will be %d:00 in your travel destination\n", midnightTrip);
+            System.out.printf("and when it is noon at home it will be %d:00\n", noonTrip);
+            System.out.print("**********\n\n");
+    
+            System.out.print("What is the square area of your destination country in km2?");
+            int areaInKm2 = SCANNER.nextInt();
+            double areaInMile2 = areaInKm2 / (1609344 / 1000);
+            System.out.printf("In miles2 that is %.2f\n", areaInMile2);
+            System.out.print("**********\n\n");
+    
+        }
+    }
